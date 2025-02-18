@@ -8,18 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/files")
-public class FileController {
+@RequiredArgsConstructor
+public class FileApiController {
 
     private final FileService fileService;
-
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
-
-    @GetMapping("/upload")
-    public String upload() {
-        return "upload";
-    }
 
     // 파일 업로드 API
     @PostMapping("/upload")

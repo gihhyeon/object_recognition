@@ -1,5 +1,7 @@
 package com.knu.object_recognition.service;
 
+import com.knu.object_recognition.dto.FileDTO;
+import com.knu.object_recognition.entity.FileEntity;
 import com.knu.object_recognition.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,20 @@ public class FileService {
                 Files.createDirectories(uploadPath);
             }
 
+            // 원본 파일명 가져오기
+            String originalFileName = file.getOriginalFilename();
+            if (originalFileName == null) {
+                return "파일 이름을 가져올 수 없습니다.";
+            }
+
             // 저장할 파일 경로 설정
-            Path filePath = uploadPath.resolve(file.getOriginalFilename());
+            Path filePath = uploadPath.resolve(originalFileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // DTO 생성 후 DB 저장
+            FileDTO fileDTO = new FileDTO(originalFileName, filePath.toString());
+            FileEntity fileEntity = new FileEntity(fileDTO);
+            fileRepository.save(fileEntity);
 
             return "파일 업로드 성공: " + filePath.toString();
         } catch (IOException e) {
