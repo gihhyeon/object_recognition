@@ -10,7 +10,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Video {
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
