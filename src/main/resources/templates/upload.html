@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>파일 업로드</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        form { margin: 20px auto; width: 50%; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        input[type="file"] { margin-bottom: 10px; }
+        button { padding: 8px 15px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
+    </style>
 </head>
 <body>
-<h2>동영상 및 사진 업로드</h2>
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <label for="file">파일 선택 (이미지 또는 동영상):</label>
-    <input type="file" id="file" name="file" accept="image/*, video/*" required>
-    <br><br>
+
+<h2>파일 업로드</h2>
+
+<form th:action="@{/api/files/upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
     <button type="submit">업로드</button>
 </form>
+
 </body>
 </html>
