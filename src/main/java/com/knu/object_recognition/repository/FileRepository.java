@@ -1,10 +1,10 @@
 package com.knu.object_recognition.repository;
 
-import lombok.RequiredArgsConstructor;
+import com.knu.object_recognition.entity.Video;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
-public class FileRepository {
+public interface FileRepository extends JpaRepository<Video, Long> {
 
 }
