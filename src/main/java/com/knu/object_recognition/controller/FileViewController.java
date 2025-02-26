@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/files")
 public class FileViewController {
 
-    @GetMapping("/upload")
+    @GetMapping("/home")
     public String showUploadPage() {
-        return "upload";  // resources/templates/upload.html을 렌더링
+        return "home";  // resources/templates/upload.html을 렌더링
     }
 }
