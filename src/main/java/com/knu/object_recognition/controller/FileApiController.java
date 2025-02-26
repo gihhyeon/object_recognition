@@ -3,9 +3,7 @@ package com.knu.object_recognition.controller;
 import com.knu.object_recognition.service.FileService;
 import org.springframework.core.io.FileSystemResource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,7 +84,7 @@ public class FileApiController {
     @GetMapping("/download-processed")
     public ResponseEntity<Resource> downloadProcessedFile(@RequestParam String fileName) {
         try {
-            // 파일 경로를 지정합니다.
+            // 파일 경로 지정
             File file = new File(uploadDir, fileName);
 
             // 파일이 존재하지 않으면 404 상태를 반환
@@ -94,10 +92,10 @@ public class FileApiController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
-            // FileSystemResource로 파일을 읽어옵니다.
+            // FileSystemResource로 파일을 읽어온다.
             Resource resource = new FileSystemResource(file);
 
-            // 파일이 존재하면 파일의 Content-Type을 설정합니다.
+            // 파일이 존재하면 파일의 Content-Type을 설정
             String contentType = Files.probeContentType(file.toPath());
             if (contentType == null) {
                 contentType = "application/octet-stream"; // 기본 값 설정
