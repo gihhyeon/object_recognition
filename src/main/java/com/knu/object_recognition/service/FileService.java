@@ -1,12 +1,10 @@
 package com.knu.object_recognition.service;
 
-import com.knu.object_recognition.dto.FileDTO;
-import com.knu.object_recognition.entity.FileEntity;
-import com.knu.object_recognition.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
@@ -14,40 +12,17 @@ import java.nio.file.*;
 @RequiredArgsConstructor
 public class FileService {
 
-    private static final String UPLOAD_DIR = System.getProperty("user.home") + "/Desktop/uploads/";
+    private final String uploadDir = System.getProperty("user.dir") + File.separator + "uploads"; // 절대경로 지정
 
-    private final FileRepository fileRepository;
-
-    public String storeFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            return "파일이 비어 있습니다.";
+    public String uploadFile(MultipartFile file) throws IOException {
+        File uploadFolder = new File(uploadDir);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdirs(); // 폴더 존재하지 않으면 생성
         }
 
-        try {
-            // 바탕화면에 uploads 폴더 생성 (없다면 생성)
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+        Path filePath = Paths.get(uploadDir, file.getOriginalFilename());
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // 원본 파일명 가져오기
-            String originalFileName = file.getOriginalFilename();
-            if (originalFileName == null) {
-                return "파일 이름을 가져올 수 없습니다.";
-            }
-
-            // 저장할 파일 경로 설정
-            Path filePath = uploadPath.resolve(originalFileName);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // DTO 생성 후 DB 저장
-            FileDTO fileDTO = new FileDTO(originalFileName, filePath.toString());
-            FileEntity fileEntity = new FileEntity(fileDTO);
-            fileRepository.save(fileEntity);
-
-            return "파일 업로드 성공: " + filePath.toString();
-        } catch (IOException e) {
-            return "파일 업로드 실패: " + e.getMessage();
-        }
+        return filePath.toAbsolutePath().toString();
     }
 }
