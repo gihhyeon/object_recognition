@@ -1,24 +1,14 @@
 package com.knu.object_recognition.controller;
 
 import com.knu.object_recognition.service.FileService;
-import org.springframework.core.io.FileSystemResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping("/files")
@@ -74,37 +64,11 @@ public class FileApiController {
 //        return ResponseEntity.ok(Arrays.asList(processedFiles));
 //    }
 //
-//    // AI 처리된 파일 다운로드
-//    @GetMapping("/download-processed")
-//    public ResponseEntity<Resource> downloadProcessedFile(@RequestParam String fileName) {
-//        try {
-//            // 파일 경로 지정
-//            File file = new File(uploadDir, fileName);
-//
-//            // 파일이 존재하지 않으면 404 상태를 반환
-//            if (!file.exists()) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//            }
-//
-//            // FileSystemResource로 파일을 읽어온다.
-//            Resource resource = new FileSystemResource(file);
-//
-//            // 파일이 존재하면 파일의 Content-Type을 설정
-//            String contentType = Files.probeContentType(file.toPath());
-//            if (contentType == null) {
-//                contentType = "application/octet-stream"; // 기본 값 설정
-//            }
-//
-//            // 파일 다운로드 헤더 설정 및 응답 반환
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-//                    .header(HttpHeaders.CONTENT_TYPE, contentType)
-//                    .body(resource);
-//        } catch (IOException e) {
-//            // 파일 처리 중 오류가 발생한 경우
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(null);
-//        }
-//    }
-
+    // AI 처리된 파일 다운로드
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadProcessedFile(@RequestParam String fileName) {
+        return fileService.downloadFile(fileName);
+    }
 }
+
+
