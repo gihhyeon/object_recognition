@@ -29,41 +29,7 @@ public class FileApiController {
         }
     }
 
-//    @PostMapping("/process")
-//    public ResponseEntity<String> processFile(@RequestParam("fileName") String fileName) {
-//        try {
-//            Path originalFilePath = Paths.get(uploadDir, fileName);
-//            if (!Files.exists(originalFilePath)) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("파일 없음");
-//            }
-//
-//            // AI 처리가 완료된 파일 이름 (예: processed_원본파일명)
-//            String processedFileName = "processed_" + fileName;
-//            Path processedFilePath = Paths.get(uploadDir, processedFileName);
-//
-//            // 파일 복사 (AI 처리가 없으므로 복사로 대체)
-//            Files.copy(originalFilePath, processedFilePath, StandardCopyOption.REPLACE_EXISTING);
-//
-//            return ResponseEntity.ok("처리 완료: " + processedFilePath.toAbsolutePath());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 처리 실패: " + e.getMessage());
-//        }
-//    }
-//
-//    // AI 처리된 파일 목록 반환 (processed_ 로 시작하는 파일만)
-//    @GetMapping("/processed-list")
-//    public ResponseEntity<List<String>> listProcessedFiles() {
-//        File folder = new File(uploadDir);
-//        if (!folder.exists() || !folder.isDirectory()) {
-//            return ResponseEntity.ok(Collections.emptyList());
-//        }
-//
-//        // "processed_" 로 시작하는 파일만 필터링
-//        String[] processedFiles = folder.list((dir, name) -> name.startsWith("processed_"));
-//        return ResponseEntity.ok(Arrays.asList(processedFiles));
-//    }
-//
+
     // AI 처리된 파일 다운로드
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadProcessedFile(@RequestParam String fileName) {
